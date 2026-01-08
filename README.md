@@ -109,11 +109,19 @@ Console output – Parkinson’s disease prediction with confidence score
 
 🐳 Docker Integration
 
+
 The complete pipeline is containerized using Docker, which ensures:
 -consistent execution across different systems,
 -simplified dependency and environment management,
 -reproducible experimental results,
 -easy deployment on edge devices such as Raspberry Pi
+
+## 📄 Additional Documentation
+
+Detailed notes on data preprocessing, model design, and Docker-based pipeline integration are available here:
+
+- [`docs/pipeline_dockerization_notes.md`](docs/pipeline_dockerization_notes.md)
+
 
 
 🔮 Future Work
