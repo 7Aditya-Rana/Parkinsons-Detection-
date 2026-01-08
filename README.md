@@ -1,105 +1,146 @@
-# Parkinson's Detection via Eye Tracking
+Parkinson’s Disease Detection via Eye-Tracking
 
-This project is a real-time eye-tracking system designed to assist in early Parkinson's Disease detection. It captures eye movement using a high-FPS camera (e.g., Raspberry Pi camera), extracts meaningful gaze features using MediaPipe and OpenCV, and uses an LSTM model to predict Parkinson’s likelihood based on temporal eye movement patterns.
+This project presents an eye-tracking–based system for the early detection of Parkinson’s Disease using video analysis and machine learning. High-frame-rate eye movement recordings are processed to extract clinically relevant gaze features, which are then analyzed using temporal deep learning models. The system is designed to run on low-cost edge hardware, enabling portable and privacy-preserving screening.
 
-## ✅ Key Features
+✅ Key Features
 
-- Eye landmark detection using **MediaPipe Face Mesh**
-- Gaze feature extraction using **OpenCV + NumPy**
-- Temporal modeling using an **LSTM neural network**
-- Real-time processing on **Raspberry Pi + 100 FPS camera**
-- Gaze data saved to **CSV**
-- Binary classification: Parkinson's Detected / Not Detected
+Eye landmark detection using MediaPipe Face Mesh
 
-## 🧠 ML Pipeline Overview
+Robust gaze and eye-movement feature extraction using OpenCV and NumPy
 
-1. **Video Input**: Captured via Pi camera or uploaded file
-2. **Landmark Detection**: Using MediaPipe for facial and eye landmarks
-3. **Feature Extraction**:
-   - Eye Aspect Ratio (EAR)
-   - Blink detection
-   - Saccade velocity
-   - Fixation events
-   - Pupil diameter and coordinates
-   - Binocular Point of Regard (PoR)
-4. **Time-Series Construction**: Frame-wise features aggregated into sequences
-5. **Model Inference**:
-   - **LSTM model** takes time-series gaze features as input
-   - Outputs Parkinson’s probability
+Noise-aware data preprocessing and behavioral labeling
 
-## 🗃 Project Structure
+Temporal modeling using an LSTM neural network
 
-```
+High-speed video processing using a 100 FPS camera
+
+Designed for edge deployment (Raspberry Pi)
+
+Offline processing to ensure data privacy
+
+Binary prediction: Parkinson’s / Non-Parkinson’s
+
+🧠 System & ML Pipeline Overview
+
+Video Acquisition
+Eye movement videos are recorded using a high-frame-rate camera to capture subtle eye dynamics.
+
+Landmark Detection
+Facial and eye landmarks are detected using MediaPipe to localize eye regions accurately.
+
+Feature Extraction
+Frame-wise eye features are extracted, including:
+
+Eye Aspect Ratio (EAR)
+
+Blink detection
+
+Saccade velocity
+
+Fixation (visual intake) detection
+
+Pupil diameter and pupil center coordinates
+
+Binocular Point of Regard (PoR)
+
+Data Preprocessing
+
+Noise reduction using median filtering
+
+Handling of missing or blank frames
+
+Removal of spurious micro-movements
+
+Semantic labeling of eye behavior (blink, saccade, fixation)
+
+Temporal Modeling
+Cleaned frame-level features are organized into fixed-length sequences suitable for time-series learning.
+
+Model Inference
+An LSTM model analyzes temporal eye-movement patterns and outputs a probability score indicating Parkinson’s likelihood.
+
+🗃 Project Structure
 📁 eye_parkinsons_project/
 │
-├── main.py               # Entry script: video capture, gaze processing
-├── pipeline.py           # Feature extraction and formatting into sequences
-├── model.py              # LSTM model architecture and inference logic
-├── utils.py              # EAR, saccade, blink, fixation, PoR calculations
-├── mongo.py              # Optional: MongoDB logging of features/results
+├── main.py                    # Entry point for video processing pipeline
+├── pipeline.py                # Feature extraction and sequence construction
+├── model.py                   # LSTM model definition and inference
+├── preprocessing.py           # Noise removal and data cleaning logic
+├── utils.py                   # EAR, blink, saccade, fixation, PoR functions
 ├── models/
-│   └── lstm_model.pt     # Trained PyTorch LSTM model
+│   └── lstm_model.pt          # Trained LSTM model
 ├── data/
-│   └── sample_video.mp4  # Sample input video
-├── eye_metrics_output.csv # Feature log per frame
+│   └── sample_video.mp4       # Example input video
+├── eye_metrics_output.csv     # Frame-wise extracted features
 └── README.md
-```
 
-## ⚙️ Requirements
-
-```bash
+⚙️ Requirements
 pip install -r requirements.txt
-```
 
-- Python 3.8+
-- OpenCV
-- MediaPipe
-- NumPy, Pandas
-- PyTorch (for LSTM)
-- Streamlit (optional for UI)
-- MongoDB (optional for DB storage)
 
-## 🚀 How to Run
+Core Dependencies
 
-### Process a Video:
+Python 3.8+
 
-```bash
+OpenCV
+
+MediaPipe
+
+NumPy, Pandas
+
+PyTorch (for LSTM)
+
+Optional
+
+Streamlit (for UI)
+
+Docker (for full pipeline integration)
+
+🚀 How to Run
+Process a Recorded Video
 python main.py --video data/sample_video.mp4
-```
 
-### Live Capture from Pi Camera:
-
-```bash
+Live Capture (Edge Device)
 python main.py --live
-```
 
-### (Optional) Streamlit Interface:
+Output
 
-```bash
-streamlit run app.py
-```
+eye_metrics_output.csv – cleaned and structured gaze features
 
-### Output:
+Console output – Parkinson’s prediction with confidence
 
-- `eye_metrics_output.csv`: all extracted gaze metrics
-- Console / log: Parkinson’s prediction
+📊 Sample Features Extracted
+Feature	Description
+Eye Aspect Ratio	Measures eye openness for blink detection
+Saccade Velocity	Speed of gaze movement between frames
+Fixation Flag	Indicates stable visual attention
+Blink Indicator	Frame-level blink detection
+Pupil Diameter	Approximate pupil size (left & right eyes)
+Point of Regard	Estimated binocular gaze location
+🐳 Docker Integration
 
-## 📊 Sample Features Extracted
+The complete pipeline is containerized using Docker, ensuring:
 
-| Feature             | Description                      |
-|---------------------|----------------------------------|
-| EAR                | Eye Aspect Ratio (blink signal)  |
-| Saccade Velocity   | Speed of gaze shift              |
-| Fixation Flag      | Binary marker for fixation       |
-| Blink Count        | Number of blinks per window      |
-| Pupil Diameter     | Size of pupils (both eyes)       |
-| Point of Regard    | (x,y) screen point of focus      |
+consistent runtime environment,
 
-## 🔮 Future Improvements
+easy deployment across systems,
 
-- Incorporate CNN + eye image data (if needed)
-- Use larger annotated datasets for better generalization
-- Export model to ONNX / TensorFlow Lite for Pi deployment
-- Add UI for live feedback to patients/clinicians
+reproducibility of results,
+
+simplified dependency management.
+
+This makes the system suitable for deployment on edge devices and future clinical setups.
+
+🔮 Future Improvements
+
+Validation on larger and more diverse clinical datasets
+
+Integration of multimodal biomarkers (speech, handwriting)
+
+Model optimization for faster edge inference
+
+Conversion to ONNX / TensorFlow Lite for embedded deployment
+
+Real-time feedback interface for clinicians
 
 
