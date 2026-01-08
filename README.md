@@ -89,7 +89,18 @@ python main.py --video data/sample_video.mp4
 
 Live Capture (Edge Device)
 python main.py --live
+## 📓 Jupyter Notebooks
 
+The following notebooks document the complete data preprocessing and model development workflow:
+
+- **Data Preprocessing – Parkinson’s Patients**  
+  `notebooks/preprocessing_parkinsons.ipynb`
+
+- **Data Preprocessing – Healthy Controls**  
+  `notebooks/preprocessing_healthy.ipynb`
+
+- **Final LSTM Model Training and Evaluation**  
+  `notebooks/final_lstm_model.ipynb`
 📤 Output
 
 eye_metrics_output.csv – cleaned and structured gaze features
